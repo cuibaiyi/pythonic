@@ -4,9 +4,9 @@ import json
 
 class Zabbix():
     def __init__(self):
-        self.url = 'https://149.129.84.9/api_jsonrpc.php'
+        self.url = 'https://ip/api_jsonrpc.php'
         self.user = 'Admin'
-        self.passwd = 'x4JWhsA#CK^jRnai'
+        self.passwd = 'xxxx'
         self.headers = {"Content-Type": "application/json-rpc"}
 
 
@@ -119,8 +119,8 @@ class Zabbix():
                         "hostid": hostid,
                         "macros": [
                             {
-                                "macro": "{$REGION}",
-                                "value": "eu"
+                                "macro": "{$REGION}", #自定义的变量
+                                "value": "eu"         #自定义的值
                             }
                         ]
                     },
@@ -136,5 +136,5 @@ class Zabbix():
 if '__main__' == __name__:
     obj = Zabbix()
     print(obj.Get_host())
-    # print(obj.Create_host(file_path='/Users/cby/Desktop/zabbix_host.log', groupid=16 ))
+    # print(obj.Create_host(file_path='/Users/cby/Desktop/zabbix_host.log', groupid=xx))
     # print(obj.Update_host())
