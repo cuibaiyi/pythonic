@@ -6,8 +6,7 @@ class Jenkins_Api():
         self.url = url
         self.name = user
         self.passwd = passwd
-        
-       
+               
     def Build_jenkins(self, jobname, demo='master'):
         j = jenkins.Jenkins(self.url, username=self.name, password=self.passwd)
         if isinstance(demo, str):
@@ -19,5 +18,5 @@ class Jenkins_Api():
         else:
            return "{job_name} 构建失败!".format(job_name=job)
 
-obj = Jenkins_Api(url, user, passwd)                #写上自己的jenkins URL 用户和密码
-print obj.Build_jenkins('ansible-cby', demo='test') #构建项目，第一个参数是项目名称，第二个是自定义的变量，我把分支作为变量
+obj = Jenkins_Api(url, user, passwd)                 #写上自己的jenkins URL 用户和密码
+print(obj.Build_jenkins('ansible-cby', demo='test')) #构建项目，第一个参数是项目名称，第二个是自定义的变量，我把分支作为变量
