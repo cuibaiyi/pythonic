@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-# -*- coding:utf-8-*-
+# -*- coding:utf-8 -*-
 import os
 import glob
 import shutil
@@ -8,12 +8,12 @@ import schedule
 import time 
 import logging
 
-logger = logging.getLogger(__name__)
-logger.setLevel(level=logging.INFO)
-handler = logging.FileHandler('/data/logs/upload_py.log')
-formatter = logging.Formatter('%(asctime)s %(levelname)s %(message)s')
-handler.setFormatter(formatter)
-logger.addHandler(handler)
+log_file = '/data/logs/upload_py.log'
+logging.basicConfig(level=logging.INFO,
+                    format='%(asctime)s %(levelname)s %(message)s',
+                    datefmt='%Y%m%d %H:%M:%S',
+                    filename=log_file,
+                    filemode='ab+')
 
 src = '/data/backup/'
 upload_log_dir = '/data/logs/appgallery_china/'
@@ -30,10 +30,10 @@ if not os.path.exists(T_dir):
 #收集远程主机的日志
 def collection_log():
   if os.system(com) == 0:
-    logger.info('节点采集日志成功~1')
+    logging.info('节点采集日志成功~1')
   cmds = cmd.format(src=src, log_path=log_path)
   if os.system(cmds) == 0:
-    logger.info('本机采集节点日志成功~2')
+    logging.info('本机采集节点日志成功~2')
   return True
 
 #log mv upload_dir
@@ -45,7 +45,7 @@ def mv_log():
     if not os.path.exists(time_dir):
       os.makedirs(time_dir)
     shutil.copy2(logs, time_dir)
-  logger.info('log mv upload_dir Successfully')
+  logging.info('log mv upload_dir Successfully')
   return True
 
   # for d, m, f in os.walk(log_path):
@@ -57,19 +57,19 @@ def mv_log():
   #       os.makedirs(time_dir)
   #     log = log_path + file_name
   #     shutil.copy2(log, time_dir)
-  # logger.info('log mv upload_dir Successfully')
+  # logging.info('log mv upload_dir Successfully')
   # return True
 
 #log upload cos and push hadoop
 def upload_cos():
   if os.system(cos) == 0:
-    logger.info('log upload cos Successfully')
+    logging.info('log upload cos Successfully')
   if os.system(rs) == 0:
-    logger.info('log push hadoop Successfully')
+    logging.info('log push hadoop Successfully')
   return True
 
 def main():
-  logger.info('============================')
+  logging.info('============================')
   collection_log()
   mv_log()    
   upload_cos()
