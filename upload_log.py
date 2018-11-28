@@ -18,10 +18,10 @@ logging.basicConfig(level=logging.INFO,
 src = '/data/backup/'
 upload_log_dir = '/data/logs/appgallery_china/'
 log_path = '/data/logs/save_log/'
-com = 'ansible AppgalleryVisitLog -m shell -a "python /data/copy_log.py"'
-cmd = 'ansible AppgalleryVisitLog -m synchronize -a "src={src} dest={log_path} mode=pull"'
-cos = 'coscmd upload -rs {upload_log_dir} /appgallery_china/'.format(upload_log_dir=upload_log_dir)
-rs = 'rsync -az {upload_log_dir} hadoop@52.77.55.25:/data/archlog/homepage/appgallery_china/'.format(upload_log_dir=upload_log_dir)
+cmd_py = 'ansible AppgalleryVisitLog -m shell -a "python /apps/script/copy_log.py"'
+cmd_pull_log = 'ansible AppgalleryVisitLog -m synchronize -a "src={src} dest={log_path} mode=pull"'
+cmd_cos = 'coscmd upload -rs {upload_log_dir} /appgallery_china/'.format(upload_log_dir=upload_log_dir)
+cmd_push_hd = 'rsync -az {upload_log_dir} hadoop@52.77.55.25:/data/archlog/homepage/appgallery_china/'.format(upload_log_dir=upload_log_dir)
 
 T_dir = upload_log_dir + datetime.datetime.now().strftime('%Y/%m/')
 if not os.path.exists(T_dir):
@@ -29,10 +29,10 @@ if not os.path.exists(T_dir):
 
 #收集远程主机的日志
 def collection_log():
-  if os.system(com) == 0:
+  if os.system(cmd_py) == 0:
     logging.info('节点采集日志成功~1')
   cmds = cmd.format(src=src, log_path=log_path)
-  if os.system(cmds) == 0:
+  if os.system(cmd_pull_log) == 0:
     logging.info('本机采集节点日志成功~2')
   return True
 
@@ -62,9 +62,9 @@ def mv_log():
 
 #log upload cos and push hadoop
 def upload_cos():
-  if os.system(cos) == 0:
+  if os.system(cmd_cos) == 0:
     logging.info('log upload cos Successfully')
-  if os.system(rs) == 0:
+  if os.system(cmd_push_hd) == 0:
     logging.info('log push hadoop Successfully')
   return True
 
@@ -75,7 +75,7 @@ def main():
   upload_cos()
   
 if __name__ == '__main__':
-  schedule.every().day.at("00:02").do(main)
+  schedule.every().day.at("00:00").do(main)
   while 1:
       schedule.run_pending()
-      time.sleep(60)
+      time.sleep(1)
