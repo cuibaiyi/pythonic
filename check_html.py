@@ -6,6 +6,7 @@ import requests
 import json
 import logging
 import os
+import re
 
 try:
     from sh import sed
@@ -13,9 +14,8 @@ except Exception as e:
     if os.system('pip install sh') == 0:
         from sh import sed
 
-log_dir = '/data/logs/'
 log_file = '/data/logs/check_html.log'
-if not os.path.exists(log_dir):
+if not os.path.exists(re.findall('/.*/', log_file)[0]):
     os.makedirs(log_dir)
 
 logging.basicConfig(level=logging.WARNING,
