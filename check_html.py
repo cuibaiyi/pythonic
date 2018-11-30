@@ -6,16 +6,30 @@ import requests
 import json
 import logging
 import os
+import sys
 import re
 
-try:
-    from bs4 import BeautifulSoup
-    from sh import sed
-except Exception as e:
-    if os.system('pip install beautifulsoup4') == 0:
-        from bs4 import BeautifulSoup
-    if os.system('pip install sh') == 0:
-        from sh import sed
+#try:
+#    from bs4 import BeautifulSoup
+#    from sh import sed
+#except Exception as e:
+#    if os.system('pip install beautifulsoup4') == 0:
+#        from bs4 import BeautifulSoup
+#    if os.system('pip install sh') == 0:
+#        from sh import sed
+
+#导入模块        
+cmd_py = ['from bs4 import BeautifulSoup', 'from sh import sed']
+cmd = ['pip install beautifulsoup4', 'pip install sh']
+l = zip(cmd_py, cmd)
+for i in l:
+    try:
+        exec(i[0])
+    except Exception as e:
+        if os.system(i[1]) == 0:
+            exec(i[0])
+        else:
+            sys.exit(1)
 
 log_file = '/data/logs/check_html.log'
 if not os.path.exists(re.findall('/.*/', log_file)[0]):
