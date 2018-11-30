@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
 __author__ = 'carlos.cui'
-from bs4 import BeautifulSoup
+
 import requests
 import json
 import logging
@@ -9,8 +9,11 @@ import os
 import re
 
 try:
+    from bs4 import BeautifulSoup
     from sh import sed
 except Exception as e:
+    if os.system('pip install beautifulsoup4') == 0:
+        from bs4 import BeautifulSoup
     if os.system('pip install sh') == 0:
         from sh import sed
 
