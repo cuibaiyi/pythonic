@@ -19,7 +19,7 @@ src = '/data/backup/'
 upload_log_dir = '/data/logs/appgallery_china/'
 log_path = '/data/logs/save_log/'
 cmd_py = 'ansible AppgalleryVisitLog -m shell -a "python /apps/script/copy_log.py"'
-cmd_pull_log = 'ansible AppgalleryVisitLog -m synchronize -a "src={src} dest={log_path} mode=pull"'
+cmd = 'ansible AppgalleryVisitLog -m synchronize -a "src={src} dest={log_path} mode=pull"'
 cmd_cos = 'coscmd upload -rs {upload_log_dir} /appgallery_china/'.format(upload_log_dir=upload_log_dir)
 cmd_push_hd = 'rsync -az {upload_log_dir} hadoop@52.77.55.25:/data/archlog/homepage/appgallery_china/'.format(upload_log_dir=upload_log_dir)
 
@@ -31,7 +31,7 @@ if not os.path.exists(T_dir):
 def collection_log():
   if os.system(cmd_py) == 0:
     logging.info('节点采集日志成功~1')
-  cmds = cmd.format(src=src, log_path=log_path)
+  cmd_pull_log = cmd.format(src=src, log_path=log_path)
   if os.system(cmd_pull_log) == 0:
     logging.info('本机采集节点日志成功~2')
   return True
@@ -48,6 +48,7 @@ def mv_log():
   logging.info('log mv upload_dir Successfully')
   return True
 
+  #os.walk的方式
   # for d, m, f in os.walk(log_path):
   #   for file_name in f:
   #     time = file_name.split(".")[-1]
