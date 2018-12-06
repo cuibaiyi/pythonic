@@ -1,6 +1,7 @@
 # pythonic
 平时自己写得python代码
-- zabbix_api
+- [zabbix_api](https://github.com/cuibaiyi/pythonic/tree/master/zabbix_api)
+
   生产环境使用zabbix api批量操作控制台使用
 - analysis_log
   生产环境集中收集各节点日志，并上传到cos上存储的脚本
