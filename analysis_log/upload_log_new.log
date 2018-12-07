@@ -18,12 +18,12 @@ logging.basicConfig(level=logging.INFO,
                     filemode='ab+')
 
 def logging_(func):
-	@wraps(func)
-	def wrapper(*args, **kw):
-		ret = func(*args, **kw)
-		loging.info(func.__name__ + "Successfully")
-		return ret
-	return wrapper
+  @wraps(func)
+  def wrapper(*args, **kw):
+    ret = func(*args, **kw)
+    logging.info(func.__name__ + "Successfully")
+    return ret
+  return wrapper
 
 src = '/data/backup/'
 upload_log_dir = '/data/logs/appgallery_china/'
@@ -38,15 +38,15 @@ T_dir = upload_log_dir + datetime.datetime.now().strftime('%Y/%m/')
 if not os.path.exists(T_dir):
   os.makedirs(T_dir)
 
-'''Collect remote node logs'''
+#Collect remote node logs
 @logging_
 def collection_log():
-	cmd1 = os.system(cmd_py)
-    cmd2 = os.system(cmd_pull_log)
+  cmd1 = os.system(cmd_py)
+  cmd2 = os.system(cmd_pull_log)
 
-    return True if 0 in (cmd1, cmd2) else sys.exit(1)
+  return True if 0 in (cmd1, cmd2) else sys.exit(1)
 
-'''log mv upload_dir'''
+#log mv upload_dir
 @logging_
 def mv_log():
   loger = glob.iglob(log_path + '*')
@@ -59,13 +59,13 @@ def mv_log():
 
   return True
 
-'''log upload cos and push hadoop'''
+#log upload cos and push hadoop
 @logging_
 def upload_cos():
-	cmd1 = os.system(cmd_cos)
-	cmd2 = os.system(cmd_push_hd)
-
-	return True if 0 in (cmd1, cmd2) else sys.exit(2)
+  cmd1 = os.system(cmd_cos)
+  cmd2 = os.system(cmd_push_hd)
+	
+  return True if 0 in (cmd1, cmd2) else sys.exit(2)
 
 @logging_
 def main():
