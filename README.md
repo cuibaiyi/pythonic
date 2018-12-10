@@ -1,5 +1,7 @@
 # pythonic
 平时自己写得python代码<br>
+- [算法](https://github.com/cuibaiyi/pythonic/tree/master/算法)
+  <br>常用自己改进版的算法<br>
 - [zabbix_api](https://github.com/cuibaiyi/pythonic/tree/master/zabbix_api)
   <br>生产环境使用zabbix api批量操作控制台使用<br>
 - [analysis_log](https://github.com/cuibaiyi/pythonic/tree/master/analysis_log)
