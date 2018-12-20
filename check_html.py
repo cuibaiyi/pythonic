@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
 __author__ = 'carlos.cui'
+__metaclass__ = type
 
 import requests
 import json
@@ -9,27 +10,27 @@ import os
 import sys
 import re
 
-#try:
-#    from bs4 import BeautifulSoup
-#    from sh import sed
-#except Exception as e:
-#    if os.system('pip install beautifulsoup4') == 0:
-#        from bs4 import BeautifulSoup
-#    if os.system('pip install sh') == 0:
-#        from sh import sed
+try:
+    from bs4 import BeautifulSoup
+    from sh import sed
+except Exception as e:
+    if os.system('pip install beautifulsoup4') == 0:
+        from bs4 import BeautifulSoup
+    if os.system('pip install sh') == 0:
+        from sh import sed
 
 #导入模块        
-cmd_py = ['from bs4 import BeautifulSoup', 'from sh import sed']
-cmd = ['pip install beautifulsoup4', 'pip install sh']
-l = zip(cmd_py, cmd)
-for i in l:
-    try:
-        exec(i[0])
-    except Exception as e:
-        if os.system(i[1]) == 0:
-            exec(i[0])
-        else:
-            sys.exit(1)
+#cmd_py = ['from bs4 import BeautifulSoup', 'from sh import sed']
+#cmd = ['pip install beautifulsoup4', 'pip install sh']
+#l = zip(cmd_py, cmd)
+#for i in l:
+#    try:
+#        exec(i[0])
+#    except Exception as e:
+#        if os.system(i[1]) == 0:
+#            exec(i[0])
+#        else:
+#            sys.exit(1)
 
 log_file = '/data/logs/check_html.log'
 if not os.path.exists(re.findall('/.*/', log_file)[0]):
@@ -53,14 +54,14 @@ def filter(url):
     for i in a:
         s = i.get_text().split()
         if s[3] == 'down':
-            err_log_record = s[1] + ' ' + s[2] + ' ' + s[3]
-            cmd = ''.join(list(['grep -q', ' ', '"', err_log_record, '"', ' ', log_file]))
+            err_log_record = ''.join([s[1], ' ', s[2], ' ', s[3]])
+            cmd = ''.join(['grep -q', ' ', '"', err_log_record, '"', ' ', log_file])
             if os.system(cmd) != 0:
-                l.append(s[1] + ' ' + s[2] + ' ' + s[3])
-                logging.warning(s[1] + ' ' + s[2] + ' ' + s[3])
+                l.append(''.join([s[1], ' ', s[2], ' ', s[3]]))
+                logging.warning(''.join([s[1], ' ', s[2], ' ', s[3]]))
         elif s[3] == 'up':
             log_record = s[1] + ' ' + s[2] + ' ' + s[3]
-            cmd = ''.join(list(['grep -q', ' ', '"', log_record, '"', ' ', log_file]))
+            cmd = ''.join(['grep -q', ' ', '"', log_record, '"', ' ', log_file])
             if os.system(cmd) == 0:
                 sed('-i', '/{log_record}/d', log_file).format(log_record=log_record)
 
