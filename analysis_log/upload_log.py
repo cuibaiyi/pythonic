@@ -21,7 +21,7 @@ log_path = '/data/logs/save_log/'
 cmd_py = 'ansible AppgalleryVisitLog -m shell -a "python /apps/script/copy_log.py"'
 cmd = 'ansible AppgalleryVisitLog -m synchronize -a "src={src} dest={log_path} mode=pull"'
 cmd_cos = 'coscmd upload -rs {upload_log_dir} /appgallery_china/'.format(upload_log_dir=upload_log_dir)
-cmd_push_hd = 'rsync -az {upload_log_dir} hadoop@52.77.55.25:/data/archlog/homepage/appgallery_china/'.format(upload_log_dir=upload_log_dir)
+cmd_push_hd = 'rsync -az {upload_log_dir} hadoop@ip:/data/archlog/homepage/appgallery_china/'.format(upload_log_dir=upload_log_dir)
 
 T_dir = upload_log_dir + datetime.datetime.now().strftime('%Y/%m/')
 if not os.path.exists(T_dir):
