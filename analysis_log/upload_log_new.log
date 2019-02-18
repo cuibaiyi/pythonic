@@ -8,6 +8,7 @@ import datetime
 import schedule
 import time 
 import logging
+from subprocess import Popen, PIPE
 from functools import wraps
 
 log_file = '/data/logs/upload_py.log'
@@ -22,15 +23,14 @@ def logging_(func):
   def wrapper(*args, **kw):
     ret = func(*args, **kw)
     logging.info(func.__name__ + "Successfully")
-    return ret
+    return result
   return wrapper
 
 src = '/data/backup/'
 upload_log_dir = '/data/logs/appgallery_china/'
 log_path = '/data/logs/save_log/'
 cmd_py = 'ansible AppgalleryVisitLog -m shell -a "python /apps/script/copy_log.py"'
-cmd = 'ansible AppgalleryVisitLog -m synchronize -a "src={src} dest={log_path} mode=pull"'
-cmd_pull_log = cmd.format(src=src, log_path=log_path)
+cmd_pull_log = 'ansible AppgalleryVisitLog -m synchronize -a "src={src} dest={log_path} mode=pull"'.format(src=src, log_path=log_path)
 cmd_cos = 'coscmd upload -rs {upload_log_dir} /appgallery_china/'.format(upload_log_dir=upload_log_dir)
 cmd_push_hd = 'rsync -az {upload_log_dir} hadoop@ip:/data/archlog/homepage/appgallery_china/'.format(upload_log_dir=upload_log_dir)
 
@@ -38,12 +38,19 @@ T_dir = upload_log_dir + datetime.datetime.now().strftime('%Y/%m/')
 if not os.path.exists(T_dir):
   os.makedirs(T_dir)
 
+def Shell(cmd):
+    if isinstance(cmd, str):
+      cmd_list = cmd.split()
+      cmd_shell = Popen(cmd_list, stdout=PIPE, stderr=PIPE)
+      return cmd_shell.poll()
+    else:
+      print("Please enter a string command!")
+      return None
+
 #Collect remote node logs
 @logging_
 def collection_log():
-  cmd1 = os.system(cmd_py)
-  cmd2 = os.system(cmd_pull_log)
-
+  cmd1, cmd2 = Shell(cmd_py), Shell(cmd_pull_log)
   return True if 0 in (cmd1, cmd2) else sys.exit(1)
 
 #log mv upload_dir
@@ -62,10 +69,8 @@ def mv_log():
 #log upload cos and push hadoop
 @logging_
 def upload_cos():
-  cmd1 = os.system(cmd_cos)
-  cmd2 = os.system(cmd_push_hd)
-	
-  return True if 0 in (cmd1, cmd2) else sys.exit(2)
+  cmd3, cmd4 = Shell(cmd_cos), Shell(cmd_push_hd)
+  return True if 0 in (cmd3, cmd4) else sys.exit(2)
 
 @logging_
 def main():
