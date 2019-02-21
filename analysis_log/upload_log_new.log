@@ -38,7 +38,7 @@ T_dir = upload_log_dir + datetime.datetime.now().strftime('%Y/%m/')
 if not os.path.exists(T_dir):
   os.makedirs(T_dir)
 
-def Shell(cmd):
+def Shell(cmd:str) -> int:
     if isinstance(cmd, str):
       cmd_list = cmd.split()
       cmd_shell = Popen(cmd_list, stdout=PIPE, stderr=PIPE)
