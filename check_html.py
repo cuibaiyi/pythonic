@@ -1,8 +1,17 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
 __author__ = 'carlos.cui'
-__metaclass__ = type
-
+"""
+#__metaclass__ = type
+soup.select('div')                  获取所有div标签内的元素
+soup.select('#author')              获取id属性为author的
+soup.select('p #author')            获取所有id属性为author的元素，只要在p标签内
+soup.select('div span')             获取所有在div元素之内的span元素
+soup.select('div > span')           获取所有在div元素之内的span元素，中间没有其他元素
+soup.select('input[name]')          获取所有名为input，并有一个name属性
+soup.select('input[type="button"]') 获取所有名为input，并有一个type属性，其值为button的元素
+getText()                           返回元素的文本数据
+"""
 import requests
 import json
 import logging
@@ -94,6 +103,6 @@ def Alert(url, token):
     return True
 
 if __name__ == '__main__':
-    token = '3ee20aba6c55414c77e8a05477b75cacd12808751f5c10924e719c883ebaxxxx'
-    url = 'http://10.8.12.1:8000/kstat'
+    token = 'xxxxxx'
+    url = 'http://10.0.0.1:8000/kstat'
     Alert(url, token)
