@@ -11,6 +11,12 @@ soup.select('div > span')           获取所有在div元素之内的span元素�
 soup.select('input[name]')          获取所有名为input，并有一个name属性
 soup.select('input[type="button"]') 获取所有名为input，并有一个type属性，其值为button的元素
 getText()                           返回元素的文本数据
+soup.find_all('a', limit=2)         输出所有的a标签，以列表形式显示,limit可以限制结果个数
+soup.find(id="cby_link")            输出第一个id属性等于cby_link的a标签
+soup.find_all(text=['down', '23'])  通过文本进行查找
+soup.tr.attrs                       获取属性tr标签的所有属性
+for i in soup.find_all('tr'):       获取所有tr标签id属性的内容,没有返回None,可以设置第二个参数
+    print(i.get('id', 'ok'))
 """
 import requests
 import json
