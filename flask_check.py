@@ -15,8 +15,8 @@ def send():
         return 'no!'
 
 def bytes_json(data_bytes):
-    data = json.loads(data_bytes.decode('utf8').replace("'", '"'))
-    return data
+    data = data_bytes.decode('utf8').replace("'", '"')
+    return json.loads(data)
 
 def send_alert(data):
     token = os.getenv('ROBOT_TOKEN')
@@ -27,7 +27,7 @@ def send_alert(data):
     send_data = {
         "msgtype": "text",
         "text": {
-            "content": bytes_json()
+            "content": data
         }
     }
     r = requests.post(url, json=send_data)
